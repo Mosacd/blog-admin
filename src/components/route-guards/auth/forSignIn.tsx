@@ -2,14 +2,14 @@ import { useAuthContext } from "../../../context/auth/hooks/useAuthContext";
 import { PropsWithChildren } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 
-const AuthGuardLogIn: React.FC<PropsWithChildren> = ({children}) =>{
-    const { user } = useAuthContext();
+const AuthGuardLogIn: React.FC<PropsWithChildren> = ({ children }) => {
+  const { user } = useAuthContext();
 
-    if(user){
-        return <Navigate to="/admin"/>
-    }
+  if (user) {
+    return <Navigate to="/admin" />;
+  }
 
-    return children || <Outlet/>;
-}
+  return children || <Outlet />;
+};
 
 export default AuthGuardLogIn;

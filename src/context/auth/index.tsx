@@ -1,4 +1,4 @@
-import {createContext, PropsWithChildren, useCallback, useState} from "react";
+import { createContext, PropsWithChildren, useCallback, useState } from "react";
 
 type User = {
   id?: string;
@@ -13,14 +13,16 @@ interface AuthContextType {
 
 export const AuthContext = createContext<AuthContextType | null>(null);
 
-export const AuthProvider:React.FC<PropsWithChildren> = ({children}) => {
-    const [user, setUser] = useState<User>(null);
+export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
+  const [user, setUser] = useState<User>(null);
 
-    const handleSetUser = useCallback((user: User) => {
-      setUser(user);
+  const handleSetUser = useCallback((user: User) => {
+    setUser(user);
   }, []);
 
-
-    return (<AuthContext.Provider value={{ user, handleSetUser }}>{children}</AuthContext.Provider>)
-
+  return (
+    <AuthContext.Provider value={{ user, handleSetUser }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };

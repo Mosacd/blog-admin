@@ -1,33 +1,23 @@
-import { useNavigate } from "react-router-dom";
-import UsersCreateUpdateFrom from "../../components/form/create-update"
-import { createUserInAdmin } from "../../../../api/apiForUsers";
+import UsersCreateUpdateFrom from "../../components/form/create-update";
+import { useCreateUser } from "../../../../../reactQuery/mutation/admin/users";
 
-const UsersCreateView = () =>{
+const UsersCreateView = () => {
+  const { mutate: createUser, isPending } = useCreateUser();
 
-    const navigate = useNavigate();
-
-  const handlCreate = async (values: { email: string; phone: string }) => {
-    try {
-      await createUserInAdmin(values);
-      navigate("/admin/users");
-    } catch (error) {
-      console.error("Error creating user:", error);
-    }
+  const handleSubmit = (values: { email: string; phone: string }) => {
+    createUser(values);
   };
 
   return (
     <>
-
-    <h1 className="font-bold mb-5 text-xl">Create User</h1>
-    <UsersCreateUpdateFrom
-      initialValues={{ email: "", phone: "" }}
-      submitCallbackFn={handlCreate}
-    />
-
+      <h1 className="font-bold mb-5 text-xl">Create User</h1>
+      <UsersCreateUpdateFrom
+        initialValues={{ email: "", phone: "" }}
+        submitCallbackFn={handleSubmit}
+      />
+      {isPending && <p>Creating user...</p>}
     </>
   );
 };
 
-
-
-export default UsersCreateView
+export default UsersCreateView;

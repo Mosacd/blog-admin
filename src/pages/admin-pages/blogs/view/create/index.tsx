@@ -1,42 +1,23 @@
-import { useNavigate } from "react-router-dom";
 import BlogsCreateUpdateFrom from "../../components/form/createUpdate";
-import { createBlogInAdmin } from "../../../../api/apiForBlogs";
-// import { useEffect } from "react";
-// import { supabase } from "../../../../../supabase";
+import { useCreateBlog } from "../../../../../reactQuery/mutation/admin/blogs";
 
-const BlogsCreateView:React.FC = () =>{
+const BlogsCreateView: React.FC = () => {
+  const { mutate: createBlogInAdmin, isPending } = useCreateBlog();
 
-
-  // useEffect(() => {
-  //   supabase.auth.getSession().then(({ data: { session } }) => {
-  //     console.log(session)
-  //   })},[])
-    
-    const navigate = useNavigate();
-
-  const handlCreate = async (values: { title: string; description: string; }) => {
-    
-    try {
-      await createBlogInAdmin(values);
-      navigate("/admin/blogs");
-    } catch (error) {
-      console.error("Error creating user:", error);
-    }
+  const handleSubmit = (values: { title: string; description: string }) => {
+    createBlogInAdmin(values);
   };
 
   return (
     <>
-
-    <h1 className="font-bold mb-5 text-xl">Create User</h1>
-    <BlogsCreateUpdateFrom
-      initialValues={{ title: "", description: "" }}
-      submitCallbackFn={handlCreate}
-    />
-
+      <h1 className="font-bold mb-5 text-xl">Create User</h1>
+      <BlogsCreateUpdateFrom
+        initialValues={{ title: "", description: "" }}
+        submitCallbackFn={handleSubmit}
+      />
+      {isPending && <p>Creating blog...</p>}
     </>
   );
 };
 
-
-
-export default BlogsCreateView
+export default BlogsCreateView;
